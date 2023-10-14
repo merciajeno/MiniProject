@@ -1,34 +1,9 @@
-const fs = require('fs');
-const http = require('http')
+const fs = require('fs');// to read form json file
+const http = require('http')//to create server
 const url = require('url')
-const slugify = require('slugify')
-// const text=fs.readFileSync('input.txt','utf-8');
-// console.log(text);
-// const textOut = "\nHello world\n";
-// fs.writeFileSync('output.txt',textOut);
-////////////////////////////////////////
-///FILES
-// fs.readFile('start.txt','utf-8',(err,data1) =>
-// {
-//     fs.readFile(`${data1}.txt`,'utf-8',(err,data2)=>
-//     {
-//         console.log(data2);
-//         fs.readFile('append.txt','utf-8',(err,data3)=>
-//     {
-//         console.log(data3);
-//         fs.writeFile('final.txt',`${data2}\n${data3}`,'utf-8',err=>
-//         {
-//             console.log("Your file is written!!")
-//         })
-//     })
-//     })
 
-    
-    
-// })
-// console.log("Will read this!");
-////////////////////////////////////////
-const replaceTemplate =require('../modules/replaceTemplate.js')
+
+const replaceTemplate =require('../modules/replaceTemplate.js')//used to replace each json object with card html code
 
 
 
@@ -38,8 +13,7 @@ const tempProduct = fs.readFileSync('../templates/template-product.html','utf-8'
 const data = fs.readFileSync('../dev-data/data.json','utf-8')
 const dataObj = JSON.parse(data)
 
-const slugs = dataObj.map(el=>slugify(el.productName,{lower:true}))
-console.log(slugs)
+
 const server = http.createServer((req,res)=>
 {
    
@@ -52,10 +26,10 @@ const server = http.createServer((req,res)=>
     if(pathname === '/overview' || pathname === '/')
     {
       res.writeHead(200,{
-        'Content-type':'text/html'
+        'Content-type':'text/html'//converts the raw html to static website
        })
        const cardsHTML = dataObj.map(el=>replaceTemplate(tempCard,el)).join('')
-       const output = tempOverview.replace('{%PRODUCT_CARDS}',cardsHTML)
+       const output = tempOverview.replace('{%PRODUCT_CARDS}',cardsHTML)//replaces the  place holder {%PRODUCT_CARDS} with HTML code
       res.end(output)
     }
     else if(pathname === '/api')
