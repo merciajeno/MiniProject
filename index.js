@@ -1,6 +1,6 @@
 const fs = require('fs');// to read form json file
 const http = require('http')//to create server
-const url = require('url')
+const url = require('url')// to get the pathname like '/','/overview' etc.
 
 
 const replaceTemplate =require('../modules/replaceTemplate.js')//used to replace each json object with card html code
@@ -11,7 +11,7 @@ const tempCard = fs.readFileSync('../templates/template-card.html','utf-8')
 const tempOverview = fs.readFileSync('../templates/template-overview.html','utf-8')
 const tempProduct = fs.readFileSync('../templates/template-product.html','utf-8')
 const data = fs.readFileSync('../dev-data/data.json','utf-8')
-const dataObj = JSON.parse(data)
+const dataObj = JSON.parse(data)//converts the data in JSON format
 
 
 const server = http.createServer((req,res)=>
@@ -20,8 +20,7 @@ const server = http.createServer((req,res)=>
     
     const {query,pathname} = url.parse(req.url)
     const sm  = url.parse(req.url)
-    console.log(sm)
-    console.log(query)
+   
    
     if(pathname === '/overview' || pathname === '/')
     {
@@ -32,14 +31,7 @@ const server = http.createServer((req,res)=>
        const output = tempOverview.replace('{%PRODUCT_CARDS}',cardsHTML)//replaces the  place holder {%PRODUCT_CARDS} with HTML code
       res.end(output)
     }
-    else if(pathname === '/api')
-    {
-       res.writeHead(200,{
-        'Content-type':'application/json'
-       })
-       res.end(data)
-    
-    }
+   
       
     else if (pathname === '/product')
     {
